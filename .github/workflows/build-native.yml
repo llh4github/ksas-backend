@@ -1,6 +1,9 @@
+# 目前仅打包，后续再考虑上传到 docker hub
 name: Build Native Image
 on:
-  workflow_dispatch
+#  workflow_dispatch
+   pull_request:
+     branches: [ "main" ]
 permissions:
   contents: read
 
