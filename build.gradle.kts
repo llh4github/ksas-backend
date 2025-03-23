@@ -40,16 +40,36 @@ configurations {
 repositories {
     mavenCentral()
 }
-
+val jimmerVersion = "0.9.68"
 dependencies {
+
+    //#region utils
     implementation("io.github.classgraph:classgraph:4.8.162")
+    implementation("com.github.yitter:yitter-idgenerator:1.0.6")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.5")
+    //#endregion utils
+
+    //#region jimmer
+    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
+    ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
+    //#endregion jimmer
+
+    //#region web
+    // 引用两个springdoc依赖以解决knife4j与springboot 3.4兼容性的问题，后续版本可能会解决
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+    implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    //#endregion web
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -61,8 +81,8 @@ tasks.withType<BootJar> {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 tasks.withType<BootBuildImage> {
-    tags.add("linhong4dockerhub/ksas-web:latest")
-    tags.add("linhong4dockerhub/ksas-web:$version")
+    tags.add("linhong4dockerhub/ksas-backend:latest")
+    tags.add("linhong4dockerhub/ksas-backend:$version")
     environment = mapOf(
         "BP_JVM_VERSION" to "21",
         "BP_NATIVE_IMAGE" to "true",

@@ -1,0 +1,19 @@
+export io.github.llh4github.ksas.dbmodel.auth.User
+    -> package io.github.llh4github.ksas.dbmodel.auth.dto
+
+UserPageEle {
+    id
+    createdByUser {
+        id
+        username
+    }
+    updatedByUser {
+        id
+        username
+    }
+    username
+    nickname
+    createdTime
+    updatedTime
+}
+
