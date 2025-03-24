@@ -1,6 +1,8 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
     kotlin("jvm") version "2.0.10"
@@ -77,6 +79,27 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+tasks.register("writeBuildTime") {
+    description = "将当前时间写入 build-time.log 文件"
+    // 定义输出文件路径
+    val outputFile = layout.buildDirectory.file("resources/main/build-time.log").get().asFile
+    // 设置任务依赖：确保在编译后执行（例如 classes 任务之后）
+    dependsOn("classes")
+    doLast {
+        // 获取当前时间并格式化
+        val currentTime = LocalDateTime.now()
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        // 确保目录存在
+        outputFile.parentFile.mkdirs()
+
+        // 写入文件（覆盖模式）
+        outputFile.writeText(currentTime)
+        println("✅ build time write file: ${outputFile.absolutePath}")
+    }
+}
+tasks.build {
+    dependsOn("writeBuildTime")
 }
 
 tasks.withType<BootJar> {
