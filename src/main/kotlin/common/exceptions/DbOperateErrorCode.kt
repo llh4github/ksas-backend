@@ -1,4 +1,4 @@
-package io.github.llh4github.ksas.exceptions
+package io.github.llh4github.ksas.common.exceptions
 
 import org.babyfish.jimmer.error.ErrorFamily
 

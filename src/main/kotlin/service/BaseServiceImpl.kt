@@ -1,10 +1,10 @@
 package io.github.llh4github.ksas.service
 
+import io.github.llh4github.ksas.common.exceptions.DbOperateException
 import io.github.llh4github.ksas.common.req.PageQueryParam
 import io.github.llh4github.ksas.common.req.PageQueryParamTrait
 import io.github.llh4github.ksas.common.req.PageResult
 import io.github.llh4github.ksas.dbmodel.BaseModel
-import io.github.llh4github.ksas.exceptions.DbOperateException
 import org.babyfish.jimmer.View
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.KExecutable
