@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "io.github.llh4github"
-version = "0.0.1-SNAPSHOT"
+version = file("project.version").readLines()[0]
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
