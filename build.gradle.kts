@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "io.github.llh4github"
-version = "0.0.1-SNAPSHOT"
+version = file("project.version").readLines()[0]
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -41,6 +41,7 @@ repositories {
     mavenCentral()
 }
 val jimmerVersion = "0.9.68"
+val coroutinesVersion = "1.10.1"
 dependencies {
 
     //#region utils
@@ -60,10 +61,12 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     //#endregion web
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${coroutinesVersion}")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -75,6 +78,30 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+// 获取 Git 短 ID（若失败则返回 "unknown"）
+val gitShortId = provider {
+    try {
+        ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+            .trim()
+    } catch (e: Exception) {
+        logger.warn("Failed to get Git short ID: ${e.message}")
+        "unknown"
+    }
+}
+springBoot {
+    buildInfo {
+        properties {
+            time = Instant.now().toString()
+            additional = mapOf(
+                "gitId" to gitShortId.get()
+            )
+        }
+    }
 }
 
 tasks.withType<BootJar> {

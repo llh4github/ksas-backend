@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.dbmodel
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import io.github.llh4github.ksas.common.consts.CreateUpdateGroup
 import io.github.llh4github.ksas.common.consts.DatetimeConstant
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.swagger.v3.oas.annotations.media.Schema
@@ -13,7 +14,7 @@ interface BaseModel {
 
     @Id
     @GeneratedValue(generatorType = TableIdGenerator::class)
-    @get:Min(1, message = "id必须大于0")
+    @get:Min(groups = [CreateUpdateGroup::class], value = 1, message = "id必须大于0")
     @get:Schema(title = "数据ID", example = "114514")
     val id: Long
 

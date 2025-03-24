@@ -1,6 +1,5 @@
 export io.github.llh4github.ksas.dbmodel.auth.User
     -> package io.github.llh4github.ksas.dbmodel.auth.dto
-
 UserPageEle {
     id
     createdByUser {
@@ -17,3 +16,21 @@ UserPageEle {
     updatedTime
 }
 
+specification UserQuerySpec {
+    like/i(username)
+    like/i(nickname)
+    pageParam: io.github.llh4github.ksas.common.req.PageQueryParam
+}
+
+UserBaseView{
+    #allScalars
+    -password
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
+}
