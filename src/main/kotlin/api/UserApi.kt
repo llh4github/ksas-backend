@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.api
 
+import io.github.llh4github.ksas.common.consts.QueryGroup
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
@@ -31,7 +32,7 @@ class UserApi(
     @PostMapping("page")
     @Operation(summary = "分页查询")
     fun page(
-        @RequestBody @Validated query: UserQuerySpec
+        @RequestBody @Validated(QueryGroup::class) query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
         return JsonWrapper.ok(rs)
