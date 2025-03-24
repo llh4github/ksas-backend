@@ -4,6 +4,12 @@ server:
 jimmer:
   language: kotlin
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
+
 spring:
   application:
     name: ksas-backend

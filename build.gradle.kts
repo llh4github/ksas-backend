@@ -1,8 +1,6 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 plugins {
     kotlin("jvm") version "2.0.10"
@@ -63,6 +61,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     //#endregion web
@@ -80,26 +79,29 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-tasks.register("writeBuildTime") {
-    description = "将当前时间写入 build-time.log 文件"
-    // 定义输出文件路径
-    val outputFile = layout.buildDirectory.file("resources/main/build-time.log").get().asFile
-    // 设置任务依赖：确保在编译后执行（例如 classes 任务之后）
-    dependsOn("classes")
-    doLast {
-        // 获取当前时间并格式化
-        val currentTime = LocalDateTime.now()
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        // 确保目录存在
-        outputFile.parentFile.mkdirs()
-
-        // 写入文件（覆盖模式）
-        outputFile.writeText(currentTime)
-        println("✅ build time write file: ${outputFile.absolutePath}")
+// 获取 Git 短 ID（若失败则返回 "unknown"）
+val gitShortId = provider {
+    try {
+        ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+            .trim()
+    } catch (e: Exception) {
+        logger.warn("Failed to get Git short ID: ${e.message}")
+        "unknown"
     }
 }
-tasks.build {
-    dependsOn("writeBuildTime")
+springBoot {
+    buildInfo {
+        properties {
+            time = Instant.now().toString()
+            additional = mapOf(
+                "gitId" to gitShortId.get()
+            )
+        }
+    }
 }
 
 tasks.withType<BootJar> {
