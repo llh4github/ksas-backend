@@ -20,11 +20,11 @@ class JwtServiceTest {
         val token = service.createToken(userId, "Tom") {
             mapOf("name" to "test")
         }
-        val claims = service.parseToken(token)
+        val claims = service.parseToken(token.first)
         assertNotNull(claims)
         assertEquals(userId.toString(), claims?.subject)
-        assertTrue(service.validateToken(token))
-        service.removeToken(token)
-        assertFalse(service.validateToken(token))
+        assertTrue(service.validateToken(token.first))
+        service.removeToken(token.first)
+        assertFalse(service.validateToken(token.first))
     }
 }

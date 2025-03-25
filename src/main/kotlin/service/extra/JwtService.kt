@@ -51,6 +51,13 @@ class JwtService(
         return redisTemplate.hasKey(key)
     }
 
+    fun validateTokenGetUsername(token: String): String? {
+        return parseToken(token)?.let {
+            val username = it[UNAME] ?: return null
+            return username as String
+        }
+    }
+
     fun validateTokenConvertBo(token: String): UserAuthBo? {
         return parseToken(token)?.let {
             val userId = it.subject.toLongOrNull() ?: return null
@@ -84,7 +91,7 @@ class JwtService(
         username: String,
         type: JwtType = JwtType.ACCESS,
         block: () -> Map<String, Any> = { emptyMap() }
-    ): String {
+    ): Pair<String, Date> {
         val expireTime = if (type == JwtType.ACCESS) {
             jwtProperty.tokenExpireTime.accessExpireTime
         } else {
@@ -110,7 +117,7 @@ class JwtService(
         val jwt = builder.compact()
         val key = "${jwtProperty.cachePrefix}:$userId:$id"
         redisTemplate.opsForValue().set(key, jwt, expiration.toJavaDuration())
-        return jwt
+        return Pair(jwt, expireTime)
     }
 }
 

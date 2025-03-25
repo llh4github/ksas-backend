@@ -2,6 +2,7 @@ package io.github.llh4github.ksas.common.exceptions
 
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.babyfish.jimmer.error.CodeBasedRuntimeException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -10,6 +11,17 @@ import org.springframework.web.servlet.resource.NoResourceFoundException
 @RestControllerAdvice
 class GlobalExpHandler {
     private val logger = KotlinLogging.logger {}
+
+    @ExceptionHandler(CodeBasedRuntimeException::class)
+    fun handleException(
+        e: CodeBasedRuntimeException
+    ): JsonWrapper<Map<String, Any?>> {
+        return JsonWrapper.fail(
+            data = e.fields, code = e.code,
+            module = e.family,
+            msg = e.message ?: "请求处理异常"
+        )
+    }
 
     @ExceptionHandler(RuntimeException::class)
     fun handleException(e: RuntimeException): JsonWrapper<String> {
