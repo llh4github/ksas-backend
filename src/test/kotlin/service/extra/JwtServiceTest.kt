@@ -17,7 +17,7 @@ class JwtServiceTest {
     @Test
     fun test_create_and_validate_jwt() {
         val userId = 114514L
-        val token = service.createToken(userId) {
+        val token = service.createToken(userId, "Tom") {
             mapOf("name" to "test")
         }
         val claims = service.parseToken(token)

@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.service.extra
 import io.github.llh4github.ksas.common.utils.IdGenerator
 import io.github.llh4github.ksas.config.property.JwtProperty
 import io.github.llh4github.ksas.config.property.JwtType
+import io.github.llh4github.ksas.security.UserAuthBo
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
 import kotlin.time.toJavaDuration
+
 
 @Service
 class JwtService(
@@ -49,6 +51,18 @@ class JwtService(
         return redisTemplate.hasKey(key)
     }
 
+    fun validateTokenConvertBo(token: String): UserAuthBo? {
+        return parseToken(token)?.let {
+            val userId = it.subject.toLongOrNull() ?: return null
+            val username = it[UNAME] ?: return null
+            return UserAuthBo(
+                userId = userId,
+                username = username as String,
+                permissions = emptyList()
+            )
+        }
+    }
+
     /**
      * 解析token
      */
@@ -67,6 +81,7 @@ class JwtService(
      */
     fun createToken(
         userId: Long,
+        username: String,
         type: JwtType = JwtType.ACCESS,
         block: () -> Map<String, Any> = { emptyMap() }
     ): String {
@@ -84,6 +99,7 @@ class JwtService(
         val id = idGenerator.nextIdStr()
         val builder = Jwts.builder()
             .id(id)
+            .claim(UNAME, username)
             .subject(userId.toString())
             .issuer(jwtProperty.issuer)
             .issuedAt(Date())
@@ -97,3 +113,6 @@ class JwtService(
         return jwt
     }
 }
+
+private const val UNAME = "uname"
+
