@@ -66,3 +66,6 @@ data class TokenExpireTime(
             return Date.from(instant)
         }
 }
+enum class JwtType {
+    ACCESS, REFRESH
+}
