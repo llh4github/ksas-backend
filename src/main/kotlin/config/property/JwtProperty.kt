@@ -24,16 +24,6 @@ class JwtProperty {
     var secret: String = "VyHZ8YGV9w94dRw8ixVzJgcoDXqvRokej2339zCxiMIgbgmM"
 
     /**
-     * JWT请求头名称
-     */
-    var headerName = "Authorization"
-
-    /**
-     * JWT请求头前缀
-     */
-    var headerPrefix = "Bearer "
-
-    /**
      * 缓存Jwt键名前缀
      *
      * 不以冒号结尾
