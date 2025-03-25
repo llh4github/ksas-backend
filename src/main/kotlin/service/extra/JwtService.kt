@@ -33,10 +33,18 @@ class JwtService(
         Jwts.parser().verifyWith(secretKey).build()
     }
 
+    fun validateToken(token: String): Boolean {
+        val claims = parseToken(token) ?: return false
+        val userId = claims.subject.toLongOrNull() ?: return false
+        val id = claims.id ?: return false
+        val key = "${jwtProperty.cachePrefix}:$userId:$id"
+        return redisTemplate.hasKey(key)
+    }
+
     /**
-     * 验证token
+     * 解析token
      */
-    fun validateToken(token: String): Claims? {
+    fun parseToken(token: String): Claims? {
         return try {
             val claims = parser.parseSignedClaims(token)
             claims.payload
