@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 
@@ -23,5 +24,7 @@ class JwtServiceTest {
         assertNotNull(claims)
         assertEquals(userId.toString(), claims?.subject)
         assertTrue(service.validateToken(token))
+        service.removeToken(token)
+        assertFalse(service.validateToken(token))
     }
 }

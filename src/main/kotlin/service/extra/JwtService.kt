@@ -33,6 +33,14 @@ class JwtService(
         Jwts.parser().verifyWith(secretKey).build()
     }
 
+    fun removeToken(token: String) {
+        val claims = parseToken(token) ?: return
+        val userId = claims.subject.toLongOrNull() ?: return
+        val id = claims.id ?: return
+        val key = "${jwtProperty.cachePrefix}:$userId:$id"
+        redisTemplate.delete(key)
+    }
+
     fun validateToken(token: String): Boolean {
         val claims = parseToken(token) ?: return false
         val userId = claims.subject.toLongOrNull() ?: return false
