@@ -16,10 +16,12 @@ class GlobalExpHandler {
     fun handleException(
         e: CodeBasedRuntimeException
     ): JsonWrapper<Map<String, Any?>> {
+        logger.warn(e) { "业务异常: ${e.message}" }
         return JsonWrapper.fail(
-            data = e.fields, code = e.code,
+            data = e.fields,
+            code = e.code,
             module = e.family,
-            msg = e.message ?: "请求处理异常"
+            msg = e.message ?: "请求处理异常",
         )
     }
 

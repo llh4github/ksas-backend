@@ -13,7 +13,6 @@ jimmer:
   pretty-sql: ${SHOW_SQL:false}
   inline-sql-variables: ${SHOW_SQL:false}
   in-list-padding-enabled: true
-  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
 
 management:
   endpoints:

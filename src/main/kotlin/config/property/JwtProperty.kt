@@ -38,6 +38,7 @@ class JwtProperty {
 }
 
 class TokenExpireTime {
+    constructor()
     var access: Duration = Duration.parse("1d")
     var refresh: Duration = Duration.parse("7d")
 

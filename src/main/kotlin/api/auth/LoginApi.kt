@@ -29,7 +29,7 @@ class LoginApi(
         return JsonWrapper.ok(rs)
     }
 
-    @Operation(summary = "登录接口")
+    @Operation(summary = "登出接口")
     @PostMapping("logout")
     fun logout(
         @RequestBody @Validated view: LogoutView
