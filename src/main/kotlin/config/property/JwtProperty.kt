@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.config.property
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.time.LocalDateTime
@@ -36,10 +37,11 @@ class JwtProperty {
     var tokenExpireTime: TokenExpireTime = TokenExpireTime()
 }
 
-data class TokenExpireTime(
-    var access: Duration = Duration.parse("1d"),
-    var refresh: Duration = Duration.parse("7d"),
-) {
+class TokenExpireTime {
+    var access: Duration = Duration.parse("1d")
+    var refresh: Duration = Duration.parse("7d")
+
+    @get:JsonIgnore
     val accessExpireTime: Date
         get() {
             val instant = LocalDateTime.now()
@@ -48,6 +50,7 @@ data class TokenExpireTime(
             return Date.from(instant)
         }
 
+    @get:JsonIgnore
     val refreshExpireTime: Date
         get() {
             val instant = LocalDateTime.now()
@@ -56,6 +59,7 @@ data class TokenExpireTime(
             return Date.from(instant)
         }
 }
+
 enum class JwtType {
     ACCESS, REFRESH
 }
