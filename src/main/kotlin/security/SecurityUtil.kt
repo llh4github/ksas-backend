@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.security
 
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 
 object SecurityUtil {
@@ -8,6 +9,10 @@ object SecurityUtil {
         return (SecurityContextHolder.getContext().authentication) as UserAuthBo
     }
 
+
+    fun authorities(): Collection<GrantedAuthority> {
+        return authBo().authorities
+    }
 
     /**
      * 获取当前用户ID

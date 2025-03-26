@@ -1,0 +1,29 @@
+export io.github.llh4github.ksas.dbmodel.auth.Role
+    -> package io.github.llh4github.ksas.dbmodel.auth.dto
+
+RoleSimpleView {
+    id
+    createdTime
+    updatedTime
+    createdByUser {
+        id
+        username
+    }
+    updatedByUser {
+        id
+        username
+    }
+    title
+    code
+}
+
+RoleAddInput {
+    title
+    code
+}
+
+RoleUpdateInput {
+    id
+    title
+    code
+}
