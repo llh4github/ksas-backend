@@ -50,8 +50,8 @@ dependencies {
     implementation("com.github.yitter:yitter-idgenerator:1.0.6")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.5")
     implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
+    implementation("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+    implementation("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
     //#endregion utils
 
     //#region jimmer
