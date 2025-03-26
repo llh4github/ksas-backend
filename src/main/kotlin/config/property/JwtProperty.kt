@@ -17,6 +17,17 @@ class JwtProperty {
      */
     var issuer: String = "ksas-backend"
 
+    var accessTokenExpireStr: String = "7d"
+    var refreshTokenExpireStr: String = "8d"
+
+    @get:JsonIgnore
+    val accessTokenExpire: Duration
+        get() = Duration.parse(accessTokenExpireStr)
+
+    @get:JsonIgnore
+    val refreshTokenExpire: Duration
+        get() = Duration.parse(refreshTokenExpireStr)
+
     /**
      * 令牌秘钥
      *
@@ -31,36 +42,24 @@ class JwtProperty {
      */
     var cachePrefix: String = "ksas-backend:jwt"
 
-    /**
-     * 令牌过期时间
-     */
-    var tokenExpireTime: TokenExpireTime = TokenExpireTime()
-}
-
-class TokenExpireTime {
-    constructor()
-    var access: Duration = Duration.parse("1d")
-    var refresh: Duration = Duration.parse("7d")
 
     @get:JsonIgnore
     val accessExpireTime: Date
-        get() {
-            val instant = LocalDateTime.now()
-                .plus(access.toJavaDuration())
-                .atZone(ZoneId.systemDefault()).toInstant()
-            return Date.from(instant)
-        }
+        get() = toDate(accessTokenExpire)
 
     @get:JsonIgnore
     val refreshExpireTime: Date
-        get() {
-            val instant = LocalDateTime.now()
-                .plus(refresh.toJavaDuration())
-                .atZone(ZoneId.systemDefault()).toInstant()
-            return Date.from(instant)
-        }
+        get() = toDate(refreshTokenExpire)
+
+    private fun toDate(dur: Duration): Date {
+        val instant = LocalDateTime.now()
+            .plus(dur.toJavaDuration())
+            .atZone(ZoneId.systemDefault()).toInstant()
+        return Date.from(instant)
+    }
 }
 
 enum class JwtType {
     ACCESS, REFRESH
 }
+

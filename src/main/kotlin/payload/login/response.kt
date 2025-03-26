@@ -19,6 +19,6 @@ data class LoginOkToken(
      * 访问凭证过期时间。减少前端计算
      */
     @Schema(description = "访问凭证过期时间")
-    @JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
+    @JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT, timezone = DatetimeConstant.BEIJING_TIME_ZONE)
     val expire: Date,
 )

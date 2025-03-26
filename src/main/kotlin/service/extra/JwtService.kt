@@ -93,14 +93,14 @@ class JwtService(
         block: () -> Map<String, Any> = { emptyMap() }
     ): Pair<String, Date> {
         val expireTime = if (type == JwtType.ACCESS) {
-            jwtProperty.tokenExpireTime.accessExpireTime
+            jwtProperty.accessExpireTime
         } else {
-            jwtProperty.tokenExpireTime.refreshExpireTime
+            jwtProperty.refreshExpireTime
         }
         val expiration = if (type == JwtType.ACCESS) {
-            jwtProperty.tokenExpireTime.access
+            jwtProperty.accessTokenExpire
         } else {
-            jwtProperty.tokenExpireTime.refresh
+            jwtProperty.refreshTokenExpire
         }
 
         val id = idGenerator.nextIdStr()

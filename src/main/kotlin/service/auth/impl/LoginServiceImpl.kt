@@ -25,7 +25,7 @@ class LoginServiceImpl(
 
     override fun login(view: UserLoginView): LoginOkToken {
         val user = fetchUser(view.username)
-        if (!passwordEncoder.matches(view.username, user.password)) {
+        if (!passwordEncoder.matches(view.password, user.password)) {
             throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
         }
         return createJwtResult(user)
