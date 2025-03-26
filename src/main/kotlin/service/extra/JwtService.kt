@@ -13,7 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
-import kotlin.time.toJavaDuration
 
 
 @Service
@@ -116,7 +115,7 @@ class JwtService(
         block().takeIf { it.isNotEmpty() }?.let { builder.claims(it) }
         val jwt = builder.compact()
         val key = "${jwtProperty.cachePrefix}:$userId:$id"
-        redisTemplate.opsForValue().set(key, jwt, expiration.toJavaDuration())
+        redisTemplate.opsForValue().set(key, jwt, expiration)
         return Pair(jwt, expireTime)
     }
 }

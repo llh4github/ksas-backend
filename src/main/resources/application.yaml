@@ -41,5 +41,5 @@ ksas:
       anon-urls: ${ANON_URLS:/auth/login,/swagger/**,/doc.html,/v3/api-docs/**}
     jwt:
       secret: ${JWT_SECRET:VyHZ8YGV9w94dRw8ixVzJgcoDXqvRokej2339zCxiMIgbgmM}
-      access-token-expire-str: ${ACCESS_TOKEN_EXPIRE_TIME:7d}
-      refresh-token-expire-str: ${REFRESH_TOKEN_EXPIRE_TIME:7d}
+      access-token-expire: ${ACCESS_TOKEN_EXPIRE_TIME:7d}
+      refresh-token-expire: ${REFRESH_TOKEN_EXPIRE_TIME:8d}

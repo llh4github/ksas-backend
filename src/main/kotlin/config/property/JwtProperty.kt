@@ -3,11 +3,10 @@ package io.github.llh4github.ksas.config.property
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
-import kotlin.time.Duration
-import kotlin.time.toJavaDuration
 
 @Configuration
 @ConfigurationProperties(prefix = "ksas.security.jwt")
@@ -17,16 +16,9 @@ class JwtProperty {
      */
     var issuer: String = "ksas-backend"
 
-    var accessTokenExpireStr: String = "7d"
-    var refreshTokenExpireStr: String = "8d"
+    var accessTokenExpire: Duration = Duration.ofDays(7)
 
-    @get:JsonIgnore
-    val accessTokenExpire: Duration
-        get() = Duration.parse(accessTokenExpireStr)
-
-    @get:JsonIgnore
-    val refreshTokenExpire: Duration
-        get() = Duration.parse(refreshTokenExpireStr)
+    var refreshTokenExpire: Duration = Duration.ofDays(8)
 
     /**
      * 令牌秘钥
@@ -51,9 +43,9 @@ class JwtProperty {
     val refreshExpireTime: Date
         get() = toDate(refreshTokenExpire)
 
-    private fun toDate(dur: Duration): Date {
+    internal fun toDate(dur: Duration): Date {
         val instant = LocalDateTime.now()
-            .plus(dur.toJavaDuration())
+            .plus(dur)
             .atZone(ZoneId.systemDefault()).toInstant()
         return Date.from(instant)
     }
