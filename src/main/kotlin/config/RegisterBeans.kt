@@ -18,8 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @ImportRuntimeHints(ReflectionHintsRegistrar::class)
 @RegisterReflection(
-    classes = [
-        io.github.llh4github.ksas.common.exceptions.GlobalExpHandler::class
+    classNames = [
+        "kotlin.collections.EmptyList",
+        "kotlin.collections.EmptyMap"
     ]
 )
 class RegisterBeans {
