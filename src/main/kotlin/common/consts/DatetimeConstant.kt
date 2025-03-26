@@ -10,4 +10,6 @@ object DatetimeConstant {
     const val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
     val DATE_TIME_FORMATTER: DateTimeFormatter =
         DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).withZone(ZoneId.systemDefault())
+
+    const val BEIJING_TIME_ZONE = "Asia/Shanghai"
 }

@@ -22,15 +22,16 @@ specification UserQuerySpec {
     pageParam: io.github.llh4github.ksas.common.req.PageQueryParam
 }
 
-UserBaseView{
+UserBaseView {
     #allScalars
     -password
-    createdByUser{
+    createdByUser {
         id
         username
     }
-    updatedByUser{
+    updatedByUser {
         id
         username
     }
 }
+

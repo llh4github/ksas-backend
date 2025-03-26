@@ -1,0 +1,126 @@
+[
+  {
+    "name": "io.jsonwebtoken.Claims",
+    "queryAllDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.Header",
+    "queryAllDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.Identifiable",
+    "queryAllDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.JwsHeader",
+    "queryAllDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.ProtectedHeader",
+    "queryAllDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.DefaultClaims",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.DefaultHeader",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.DefaultJwsHeader",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.DefaultJwtBuilder",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.jsonwebtoken.impl.DefaultProtectedHeader",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.ParameterMap",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.lang.Nameable",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.lang.ParameterReadable",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.security.KeysBridge",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.impl.security.StandardKeyOperations",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.jsonwebtoken.impl.security.StandardSecureDigestAlgorithms",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.jsonwebtoken.jackson.io.JacksonSerializer",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "io.jsonwebtoken.security.X509Accessor",
+    "allDeclaredFields": true,
+    "queryAllDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true
+  }
+]

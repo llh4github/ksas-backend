@@ -42,12 +42,16 @@ repositories {
 }
 val jimmerVersion = "0.9.68"
 val coroutinesVersion = "1.10.1"
+val jjwtVersion = "0.12.6"
 dependencies {
 
     //#region utils
     implementation("io.github.classgraph:classgraph:4.8.162")
     implementation("com.github.yitter:yitter-idgenerator:1.0.6")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.5")
+    implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+    implementation("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+    implementation("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
     //#endregion utils
 
     //#region jimmer
@@ -61,6 +65,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -72,6 +78,7 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
