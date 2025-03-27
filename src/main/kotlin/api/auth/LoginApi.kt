@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.payload.login.LoginOkToken
 import io.github.llh4github.ksas.payload.login.LogoutView
+import io.github.llh4github.ksas.payload.login.RefreshJwtView
 import io.github.llh4github.ksas.payload.login.UserLoginView
 import io.github.llh4github.ksas.service.auth.LoginService
 import io.swagger.v3.oas.annotations.Operation
@@ -34,5 +35,12 @@ class LoginApi(
     ): JsonWrapper<Void> {
         loginService.logout(view)
         return JsonWrapper.ok()
+    }
+
+    @Operation(summary = "刷新登录凭证接口")
+    @PostMapping("token/refresh")
+    fun refreshToken(view: RefreshJwtView): JsonWrapper<LoginOkToken> {
+        val rs = loginService.refreshToken(view)
+        return JsonWrapper.ok(rs)
     }
 }
