@@ -27,3 +27,21 @@ RoleUpdateInput {
     title
     code
 }
+
+specification RoleQuerySpec {
+    like/i(title)
+    like/i(code)
+    pageParam: io.github.llh4github.ksas.common.req.PageQueryParam
+}
+
+RoleBaseView{
+    #allScalars
+    createdByUser{
+        id
+        username
+    }
+    updatedByUser{
+        id
+        username
+    }
+}

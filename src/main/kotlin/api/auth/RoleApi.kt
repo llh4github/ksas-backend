@@ -4,10 +4,9 @@ import io.github.llh4github.ksas.common.consts.CreateGroup
 import io.github.llh4github.ksas.common.consts.RolePermConst
 import io.github.llh4github.ksas.common.consts.UpdateGroup
 import io.github.llh4github.ksas.common.req.JsonWrapper
+import io.github.llh4github.ksas.common.req.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
-import io.github.llh4github.ksas.dbmodel.auth.dto.RoleAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.RoleSimpleView
-import io.github.llh4github.ksas.dbmodel.auth.dto.RoleUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.RoleService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -21,6 +20,19 @@ import org.springframework.web.bind.annotation.*
 class RoleApi(
     private val roleService: RoleService
 ) {
+
+    @PostMapping("page")
+    @Operation(
+        summary = "分页查询",
+        description = "permission: ${RolePermConst.QUERY_PAGE}"
+    )
+    @PreAuthorize("@pc.hasPermission('${RolePermConst.QUERY_PAGE}')")
+    fun page(
+        @RequestBody query: RoleQuerySpec
+    ): JsonWrapper<PageResult<RoleBaseView>> {
+        val rs = roleService.pageQuery(RoleBaseView::class, query, query.pageParam)
+        return JsonWrapper.ok(rs)
+    }
 
     @Operation(
         summary = "根据ID获取角色",
