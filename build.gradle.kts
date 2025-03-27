@@ -40,6 +40,9 @@ configurations {
 repositories {
     mavenCentral()
 }
+configurations.all {
+    exclude(group = "xpp3", module = "xpp3") // native-image build failed with xpp3
+}
 val jimmerVersion = "0.9.68"
 val coroutinesVersion = "1.10.1"
 val jjwtVersion = "0.12.6"
@@ -121,8 +124,10 @@ tasks.withType<BootBuildImage> {
         "BP_JVM_VERSION" to "21",
         "BP_NATIVE_IMAGE" to "true",
         "BP_DEBUG_ENABLED" to "true",
+        "BP_JVM_CDS_ENABLED" to "true",
         "BP_SPRING_AOT_ENABLED" to "true",
         "BP_OCI_CREATED" to Instant.now().toString(),
+        "BP_INCLUDE_FILES" to "./logs/:/workspace/logs/"
     )
     // 启用构建缓存（加速后续构建）
     buildCache {

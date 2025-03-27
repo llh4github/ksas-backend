@@ -6,7 +6,9 @@ knife4j:
   enable: false
   # 开启生产环境屏蔽
   production: ${DISABLE_SWAGGER:true}
-
+logging:
+  file:
+    path: ${LOG_PATH:./logs}
 jimmer:
   language: kotlin
   show-sql: ${SHOW_SQL:false}
@@ -22,7 +24,7 @@ management:
 
 spring:
   application:
-    name: ksas-backend
+    name: ${APP_NAME:ksas-backend}
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/ksas}
     username: ${DB_USERNAME:postgres}
