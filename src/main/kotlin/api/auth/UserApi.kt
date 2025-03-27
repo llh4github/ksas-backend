@@ -1,11 +1,10 @@
-package io.github.llh4github.ksas.api
+package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.common.consts.QueryGroup
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserBaseView
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserPageEle
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserQuerySpec
+import io.github.llh4github.ksas.dbmodel.auth.User
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.UserService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
@@ -21,6 +20,22 @@ class UserApi(
 ) {
     private val logger = KotlinLogging.logger {}
 
+    @PostMapping
+    @Operation(summary = "新增用户")
+    fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<User> {
+        val rs = userService.addUnique(input)
+        return JsonWrapper.ok(rs)
+    }
+
+    @PutMapping("update/roles")
+    @Operation(summary = "修改用户拥有角色关系")
+    fun updateRole(
+        @RequestBody @Validated input: UserUpdateRoleInput
+    ): JsonWrapper<Boolean> {
+        val rs = userService.updateRole(input)
+        return JsonWrapper.ok(rs)
+    }
+
     @GetMapping
     @Operation(summary = "根据ID获取用户")
     fun getById(@RequestParam(value = "id", required = true) id: Long): UserPageEle? {
@@ -35,6 +50,6 @@ class UserApi(
         @RequestBody @Validated(QueryGroup::class) query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
-        return JsonWrapper.ok(rs)
+        return JsonWrapper.Companion.ok(rs)
     }
 }
