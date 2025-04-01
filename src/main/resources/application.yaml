@@ -17,10 +17,13 @@ jimmer:
   in-list-padding-enabled: true
 
 management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
   endpoints:
     web:
       exposure:
-        include: info
+        include: info,prometheus
 
 spring:
   application:
@@ -40,7 +43,7 @@ spring:
 ksas:
   security:
     auth:
-      anon-urls: ${ANON_URLS:/login,/swagger/**,/doc.html,/v3/api-docs/**}
+      anon-urls: ${ANON_URLS:/login,/actuator/**,/swagger/**,/doc.html,/v3/api-docs/**}
     jwt:
       secret: ${JWT_SECRET:VyHZ8YGV9w94dRw8ixVzJgcoDXqvRokej2339zCxiMIgbgmM}
       access-token-expire: ${ACCESS_TOKEN_EXPIRE_TIME:7d}

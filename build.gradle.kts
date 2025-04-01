@@ -63,6 +63,7 @@ dependencies {
     //#endregion jimmer
 
     //#region web
+    implementation("io.micrometer:micrometer-registry-prometheus:1.14.5")
     // 引用两个springdoc依赖以解决knife4j与springboot 3.4兼容性的问题，后续版本可能会解决
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
@@ -124,6 +125,7 @@ tasks.withType<BootBuildImage> {
         "BP_JVM_VERSION" to "21",
         "BP_NATIVE_IMAGE" to "true",
         "BP_DEBUG_ENABLED" to "true",
+        "BP_OCI_VERSION" to version.toString(),
         "BP_JVM_CDS_ENABLED" to "true",
         "BP_SPRING_AOT_ENABLED" to "true",
         "BP_OCI_CREATED" to Instant.now().toString(),

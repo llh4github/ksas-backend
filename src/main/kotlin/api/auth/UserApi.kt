@@ -37,7 +37,6 @@ class UserApi(
     @Operation(
         summary = "修改用户拥有角色关系",
         description = "permission: ${UserPermConst.UPDATE_DATA}"
-
     )
     @PreAuthorize("@pc.hasPermission('${UserPermConst.UPDATE_DATA}')")
     fun updateRole(
@@ -55,7 +54,6 @@ class UserApi(
     @PreAuthorize("@pc.hasPermission('${UserPermConst.QUERY_SINGLE}')")
     fun getById(@RequestParam(value = "id", required = true) id: Long): UserPageEle? {
         val dto = userService.getById(UserPageEle::class, id)
-        logger.debug { "getById $dto" }
         return dto
     }
 
