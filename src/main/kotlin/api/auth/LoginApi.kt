@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.payload.login.LoginOkToken
 import io.github.llh4github.ksas.payload.login.LogoutView
+import io.github.llh4github.ksas.payload.login.RefreshJwtView
 import io.github.llh4github.ksas.payload.login.UserLoginView
 import io.github.llh4github.ksas.service.auth.LoginService
 import io.swagger.v3.oas.annotations.Operation
@@ -10,12 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "认证接口")
 @RestController
-@RequestMapping("auth")
 class LoginApi(
     private val loginService: LoginService
 ) {
@@ -36,5 +35,12 @@ class LoginApi(
     ): JsonWrapper<Void> {
         loginService.logout(view)
         return JsonWrapper.ok()
+    }
+
+    @Operation(summary = "刷新登录凭证接口")
+    @PostMapping("token/refresh")
+    fun refreshToken(view: RefreshJwtView): JsonWrapper<LoginOkToken> {
+        val rs = loginService.refreshToken(view)
+        return JsonWrapper.ok(rs)
     }
 }

@@ -1,5 +1,21 @@
 [
   {
+    "name": "org.babyfish.jimmer.sql.JoinTable",
+    "allDeclaredClasses": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "org.babyfish.jimmer.sql.JoinTable$JoinTableFilter",
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
+    "name": "org.babyfish.jimmer.sql.JoinTable$LogicalDeletedFilter",
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  },
+  {
     "name": "io.jsonwebtoken.Claims",
     "queryAllDeclaredMethods": true,
     "allDeclaredFields": true,

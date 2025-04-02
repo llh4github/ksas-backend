@@ -1,6 +1,5 @@
 package io.github.llh4github.ksas.service
 
-import io.github.llh4github.ksas.common.exceptions.DbOperateException
 import io.github.llh4github.ksas.common.req.PageQueryParam
 import io.github.llh4github.ksas.common.req.PageQueryParamTrait
 import io.github.llh4github.ksas.common.req.PageResult
@@ -10,10 +9,8 @@ import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.KExecutable
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
-import org.babyfish.jimmer.sql.kt.ast.mutation.KDeleteResult
 import org.babyfish.jimmer.sql.kt.ast.mutation.KMutableDelete
 import org.babyfish.jimmer.sql.kt.ast.mutation.KMutableUpdate
-import org.babyfish.jimmer.sql.kt.ast.mutation.KSimpleSaveResult
 import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
@@ -30,7 +27,7 @@ abstract class BaseServiceImpl<E : BaseModel>(
     protected lateinit var transactionTemplate: TransactionTemplate
 
     @Autowired
-    private lateinit var sqlClient: KSqlClient
+    protected lateinit var sqlClient: KSqlClient
 
     protected fun <R> createQuery(
         block: KMutableRootQuery<E>.() -> KConfigurableRootQuery<E, R>
@@ -127,42 +124,4 @@ abstract class BaseServiceImpl<E : BaseModel>(
         return condition.limit(limit).execute()
     }
 
-    /**
-     * 检查新增数据结果. 如果新增数据失败, 则抛出异常
-     * @throws DbOperateException 新增数据失败
-     */
-    fun testAddDbResult(
-        rs: KSimpleSaveResult<*>,
-        message: String = "新增数据失败"
-    ) {
-        if (!rs.isModified) {
-            throw DbOperateException.addFailed(message = message)
-        }
-    }
-
-    /**
-     * 检查更新数据结果. 如果更新数据失败, 则抛出异常
-     * @throws DbOperateException 更新数据失败
-     */
-    fun testUpdateDbResult(
-        rs: KSimpleSaveResult<*>,
-        message: String = "更新数据失败"
-    ) {
-        if (!rs.isModified) {
-            throw DbOperateException.updateFailed(message = message)
-        }
-    }
-
-    /**
-     * 检查删除数据结果. 如果删除数据失败, 则抛出异常
-     * @throws DbOperateException 删除数据失败
-     */
-    fun testDeleteDbResult(
-        rs: KDeleteResult,
-        message: String = "没有数据被删除"
-    ) {
-        if (rs.totalAffectedRowCount == 0) {
-            throw DbOperateException.deleteFailed(message = message)
-        }
-    }
 }
