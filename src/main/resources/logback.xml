@@ -3,6 +3,9 @@
     <!-- 从Spring环境读取配置 -->
     <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="./logs"/>
     <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="ksas"/>
+    <springProperty scope="context" name="LOKI_ENV" source="loki.env" defaultValue="dev"/>
+    <springProperty scope="context" name="LOKI_URL" source="loki.url"
+                    defaultValue="http://localhost:3100/loki/api/v1/push"/>
     <parserClass>com.sun.org.apache.xerces.internal.parsers.SAXParser</parserClass>
 
     <!-- 控制台输出 -->
@@ -12,7 +15,19 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>${LOKI_URL}</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=${APP_NAME},env=${LOKI_ENV},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>${HOSTNAME} [%thread] %logger{35} - %msg%n</pattern>
+            </message>
+        </format>
+    </appender>
     <!-- 文件输出（带滚动策略） -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${APP_NAME}.log</file>
@@ -34,6 +49,7 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="LOKI"/>
     </root>
 
     <!-- 特定包日志级别 -->

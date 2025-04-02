@@ -49,6 +49,7 @@ val jjwtVersion = "0.12.6"
 dependencies {
 
     //#region utils
+    implementation("com.github.loki4j:loki-logback-appender:1.6.0")
     implementation("io.github.classgraph:classgraph:4.8.162")
     implementation("com.github.yitter:yitter-idgenerator:1.0.6")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.5")
