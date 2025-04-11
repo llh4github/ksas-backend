@@ -2,9 +2,9 @@ package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.common.consts.QueryGroup
 import io.github.llh4github.ksas.common.consts.UserPermConst
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
-import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.UserService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -28,7 +28,7 @@ class UserApi(
         description = "permission: ${UserPermConst.ADD_DATA}"
     )
     @PreAuthorize("@pc.hasPermission('${UserPermConst.ADD_DATA}')")
-    fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<User> {
+    fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<DbOpResult> {
         val rs = userService.addUnique(input)
         return JsonWrapper.ok(rs)
     }

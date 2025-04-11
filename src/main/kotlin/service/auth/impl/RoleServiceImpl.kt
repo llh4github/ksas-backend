@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.code
 import io.github.llh4github.ksas.dbmodel.auth.dto.RoleAddInput
@@ -21,15 +22,17 @@ class RoleServiceImpl : RoleService, BaseServiceImpl<Role>(Role::class), SimpleU
 
 
     @Transactional
-    override fun addUnique(input: RoleAddInput): Role {
+    override fun addUnique(input: RoleAddInput): DbOpResult {
         val entity = input.toEntity()
-        return addUniqueData(entity, sqlClient)
+        addUniqueData(entity, sqlClient)
+        return DbOpResult.success()
     }
 
     @Transactional
-    override fun updateUnique(input: RoleUpdateInput): Role {
+    override fun updateUnique(input: RoleUpdateInput): DbOpResult {
         val entity = input.toEntity()
-        return updateUniqueData(entity, sqlClient)
+        updateUniqueData(entity, sqlClient)
+        return DbOpResult.success()
     }
 
     override fun checkUnique(entity: Role) {

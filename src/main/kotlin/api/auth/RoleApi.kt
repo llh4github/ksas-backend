@@ -3,9 +3,9 @@ package io.github.llh4github.ksas.api.auth
 import io.github.llh4github.ksas.common.consts.CreateGroup
 import io.github.llh4github.ksas.common.consts.RolePermConst
 import io.github.llh4github.ksas.common.consts.UpdateGroup
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
-import io.github.llh4github.ksas.dbmodel.auth.Role
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.RoleService
 import io.swagger.v3.oas.annotations.Operation
@@ -54,7 +54,7 @@ class RoleApi(
     fun add(
         @RequestBody @Validated(CreateGroup::class)
         input: RoleAddInput
-    ): JsonWrapper<Role> {
+    ): JsonWrapper<DbOpResult> {
         val rs = roleService.addUnique(input)
         return JsonWrapper.ok(rs)
     }
@@ -68,7 +68,7 @@ class RoleApi(
     fun update(
         @RequestBody @Validated(UpdateGroup::class)
         input: RoleUpdateInput
-    ): JsonWrapper<Role> {
+    ): JsonWrapper<DbOpResult> {
         val rs = roleService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }

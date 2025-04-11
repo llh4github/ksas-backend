@@ -1,9 +1,9 @@
 package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.common.consts.PermissionPermConst
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
-import io.github.llh4github.ksas.dbmodel.auth.Permission
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.PermissionService
 import io.swagger.v3.oas.annotations.Operation
@@ -42,7 +42,7 @@ class PermissionApi(
     @PostMapping
     fun add(
         @RequestBody @Validated input: PermissionAddInput
-    ): JsonWrapper<Permission> {
+    ): JsonWrapper<DbOpResult> {
         val rs = permissionService.addUnique(input)
         return JsonWrapper.ok(rs)
     }
@@ -66,7 +66,7 @@ class PermissionApi(
     @PreAuthorize("@pc.hasPermission('${PermissionPermConst.UPDATE_DATA}')")
     fun update(
         @RequestBody @Validated input: PermissionUpdateInput
-    ): JsonWrapper<Permission> {
+    ): JsonWrapper<DbOpResult> {
         val rs = permissionService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }

@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.Permission
 import io.github.llh4github.ksas.dbmodel.auth.code
 import io.github.llh4github.ksas.dbmodel.auth.dto.PermissionAddInput
@@ -41,14 +42,16 @@ class PermissionServiceImpl : PermissionService,
         }
     }
 
-    override fun addUnique(input: PermissionAddInput): Permission {
+    override fun addUnique(input: PermissionAddInput): DbOpResult {
         val entity = input.toEntity()
-        return addUniqueData(entity, sqlClient)
+        addUniqueData(entity, sqlClient)
+        return DbOpResult.success()
     }
 
-    override fun updateUnique(input: PermissionUpdateInput): Permission {
+    override fun updateUnique(input: PermissionUpdateInput): DbOpResult {
         val entity = input.toEntity()
-        return updateUniqueData(entity, sqlClient)
+        updateUniqueData(entity, sqlClient)
+        return DbOpResult.success()
     }
 
     override fun treeData(id: Long?): PermissionCasecaderView? {
