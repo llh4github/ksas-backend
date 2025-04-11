@@ -41,7 +41,7 @@ class UserApi(
     @PreAuthorize("@pc.hasPermission('${UserPermConst.UPDATE_DATA}')")
     fun updateRole(
         @RequestBody @Validated input: UserUpdateRoleInput
-    ): JsonWrapper<Boolean> {
+    ): JsonWrapper<DbOpResult> {
         val rs = userService.updateRole(input)
         return JsonWrapper.ok(rs)
     }
