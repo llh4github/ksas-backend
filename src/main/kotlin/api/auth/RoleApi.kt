@@ -34,6 +34,19 @@ class RoleApi(
         return JsonWrapper.ok(rs)
     }
 
+    @GetMapping("{roleId:\\d+}/permissionIds")
+    @Operation(
+        summary = "查询角色拥有的权限ID",
+        description = "permission: ${RolePermConst.QUERY_SINGLE}"
+    )
+    @PreAuthorize("@pc.hasPermission('${RolePermConst.QUERY_SINGLE}')")
+    fun permissionIds(
+        @PathVariable("roleId") id: Long
+    ): JsonWrapper<RolePermissionIdView> {
+        val rs = roleService.getById(RolePermissionIdView::class, id)
+        return JsonWrapper.ok(rs)
+    }
+
     @Operation(
         summary = "根据ID获取角色",
         description = "permission: ${RolePermConst.QUERY_SINGLE}"

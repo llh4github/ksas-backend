@@ -28,7 +28,12 @@ RoleUpdateInput {
     code
 }
 
-RoleUpdatePermissionInput {
+RolePermissionIdView {
+    id
+    id(permissions) as permissionIds
+}
+
+input RoleUpdatePermissionInput {
     id
     id(permissions) as permissionIds
 }

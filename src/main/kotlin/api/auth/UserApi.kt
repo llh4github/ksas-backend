@@ -57,6 +57,17 @@ class UserApi(
         return dto
     }
 
+    @GetMapping("{id:\\d+}/roleIds")
+    @Operation(
+        summary = "根据ID获取用户拥有角色ID",
+        description = "permission: ${UserPermConst.QUERY_SINGLE}"
+    )
+    @PreAuthorize("@pc.hasPermission('${UserPermConst.QUERY_SINGLE}')")
+    fun roleIds(@PathVariable("id") id: Long): JsonWrapper<UserRoleIdView> {
+        val rs = userService.getById(UserRoleIdView::class, id)
+        return JsonWrapper.ok(rs)
+    }
+
     @PostMapping("page")
     @Operation(
         summary = "分页查询",
@@ -69,4 +80,5 @@ class UserApi(
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
         return JsonWrapper.Companion.ok(rs)
     }
+
 }
