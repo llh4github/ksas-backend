@@ -28,19 +28,25 @@ RoleUpdateInput {
     code
 }
 
+RoleUpdatePermissionInput {
+    id
+    id(permissions) as permissionIds
+}
+
+
 specification RoleQuerySpec {
     like/i(title)
     like/i(code)
     pageParam: io.github.llh4github.ksas.common.req.PageQueryParam
 }
 
-RoleBaseView{
+RoleBaseView {
     #allScalars
-    createdByUser{
+    createdByUser {
         id
         username
     }
-    updatedByUser{
+    updatedByUser {
         id
         username
     }

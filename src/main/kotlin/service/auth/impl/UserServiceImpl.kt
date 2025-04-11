@@ -68,6 +68,7 @@ class UserServiceImpl : UserService,
 
     @Transactional
     override fun updateRole(input: UserUpdateRoleInput): DbOpResult {
+        sqlClient.getAssociations(User::roles).deleteAll(listOf(input.id), input.roleIds)
         val rs = sqlClient.save(input)
         testAddDbResult(rs)
         return DbOpResult.success()

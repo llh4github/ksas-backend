@@ -35,20 +35,20 @@ UserBaseView {
     }
 }
 
-input UserAddInput{
+input UserAddInput {
     username
     password
     nickname
 }
 
-input UserUpdateInput{
+input UserUpdateInput {
     id
     username
     password
     nickname
 }
 
-input UserUpdateRoleInput{
-    id
-   id(roles) as roleIds
+input UserUpdateRoleInput {
+    id!
+    id(roles) as roleIds
 }

@@ -72,4 +72,19 @@ class RoleApi(
         val rs = roleService.updateUnique(input)
         return JsonWrapper.ok(rs)
     }
+
+
+    @PutMapping("update/permissions")
+    @Operation(
+        summary = "更新角色拥有的权限",
+        description = "permission: ${RolePermConst.UPDATE_DATA}",
+    )
+    @PreAuthorize("@pc.hasPermission('${RolePermConst.UPDATE_DATA}')")
+    fun updatePermission(
+        @RequestBody @Validated(UpdateGroup::class)
+        input: RoleUpdatePermissionInput
+    ): JsonWrapper<DbOpResult> {
+        val rs: DbOpResult = roleService.updatePermission(input)
+        return JsonWrapper.ok(rs)
+    }
 }

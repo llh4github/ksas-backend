@@ -45,4 +45,8 @@ interface Permission : BaseModel {
 
     @OneToMany(mappedBy = "parent")
     val children: List<Permission>
+
+    @ManyToMany(mappedBy = "permissions")
+    val roles: List<Role>
+
 }
