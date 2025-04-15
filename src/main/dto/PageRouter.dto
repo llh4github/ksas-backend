@@ -1,0 +1,80 @@
+export io.github.llh4github.ksas.dbmodel.auth.PageRouter
+    -> package io.github.llh4github.ksas.dbmodel.auth.dto
+
+
+PageRouterCascaderView {
+    id
+    title
+    children*
+}
+PageRouterTreeView {
+    id
+    path
+    name
+    redirect
+    meta
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    permissions {
+        code
+    }
+
+    children*
+}
+
+PageRouterWithPermissionView {
+    id
+    path
+    name
+    redirect
+    id(parent)
+    meta
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    permissions {
+        code
+    }
+}
+
+input PageRouterAddInput {
+    #allScalars(this)
+    id(parent)
+    id(permissions) as permissionIds
+}
+
+input PageRouterUpdateInput {
+    #allScalars(this)
+    id!
+    id(parent)
+    id(permissions) as permissionIds
+}
+
+specification PageRouterQuerySpec {
+    like/i(path)
+    like/i(name)
+    like/i(title)
+    menuType
+    like/i(component)
+    pageParam: io.github.llh4github.ksas.common.req.PageQueryParam
+}
+
+PageRouterListView {
+    #allScalars
+    id(parent)
+    id(permissions) as permissionIds
+    createdByUser {
+        id
+        username
+    }
+    updatedByUser {
+        id
+        username
+    }
+}
+PageRouterPermissionIdView {
+    id
+    id(permissions) as permissionIds
+}
+
+input PageRouterPermissionUpdateInput {
+    id!
+    id(permissions) as permissionIds
+}
