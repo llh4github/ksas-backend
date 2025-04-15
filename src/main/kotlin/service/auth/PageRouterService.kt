@@ -2,10 +2,7 @@ package io.github.llh4github.ksas.service.auth
 
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.PageRouter
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterCascaderView
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterPermissionUpdateInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.BaseService
 
 interface PageRouterService : BaseService<PageRouter> {
@@ -13,7 +10,7 @@ interface PageRouterService : BaseService<PageRouter> {
     /**
      * 获取所有路由树
      */
-//    fun allRouterTree(permissions: List<String>):List<PageRouterTreeBo>
+    fun allRouterTree(username: String): List<PageRouterTreeView>
 
     fun addUnique(input: PageRouterAddInput): DbOpResult
 

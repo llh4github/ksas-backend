@@ -3,10 +3,7 @@ package io.github.llh4github.ksas.service.auth.impl
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.PageRouter
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterCascaderView
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterPermissionUpdateInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.PageRouterUpdateInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.name
 import io.github.llh4github.ksas.dbmodel.auth.parentId
@@ -68,5 +65,9 @@ class PageRouterServiceImpl :
         val rs = sqlClient.save(input)
         testAddDbResult(rs)
         return DbOpResult.success()
+    }
+
+    override fun allRouterTree(username: String): List<PageRouterTreeView> {
+        return emptyList()
     }
 }
