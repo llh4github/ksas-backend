@@ -43,7 +43,7 @@ repositories {
 configurations.all {
     exclude(group = "xpp3", module = "xpp3") // native-image build failed with xpp3
 }
-val jimmerVersion = "0.9.97"
+val jimmerVersion = "0.9.68"
 val coroutinesVersion = "1.10.1"
 val jjwtVersion = "0.12.6"
 dependencies {
