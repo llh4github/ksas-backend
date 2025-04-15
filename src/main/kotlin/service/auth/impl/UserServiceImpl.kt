@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
@@ -57,17 +58,19 @@ class UserServiceImpl : UserService,
 
 
     @Transactional
-    override fun addUnique(input: UserAddInput): User {
+    override fun addUnique(input: UserAddInput): DbOpResult {
         val entity = input.toEntity {
             password = passwordEncoder.encode(input.password)
         }
-        return addUniqueData(entity, sqlClient)
+        addUniqueData(entity, sqlClient)
+        return DbOpResult.success()
     }
 
     @Transactional
-    override fun updateRole(input: UserUpdateRoleInput): Boolean {
+    override fun updateRole(input: UserUpdateRoleInput): DbOpResult {
+        sqlClient.getAssociations(User::roles).deleteAll(listOf(input.id), input.roleIds)
         val rs = sqlClient.save(input)
         testAddDbResult(rs)
-        return rs.isModified
+        return DbOpResult.success()
     }
 }

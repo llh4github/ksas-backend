@@ -2,9 +2,9 @@ package io.github.llh4github.ksas.api.auth
 
 import io.github.llh4github.ksas.common.consts.QueryGroup
 import io.github.llh4github.ksas.common.consts.UserPermConst
+import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.common.req.PageResult
-import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.service.auth.UserService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -28,7 +28,7 @@ class UserApi(
         description = "permission: ${UserPermConst.ADD_DATA}"
     )
     @PreAuthorize("@pc.hasPermission('${UserPermConst.ADD_DATA}')")
-    fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<User> {
+    fun add(@RequestBody @Validated input: UserAddInput): JsonWrapper<DbOpResult> {
         val rs = userService.addUnique(input)
         return JsonWrapper.ok(rs)
     }
@@ -41,7 +41,7 @@ class UserApi(
     @PreAuthorize("@pc.hasPermission('${UserPermConst.UPDATE_DATA}')")
     fun updateRole(
         @RequestBody @Validated input: UserUpdateRoleInput
-    ): JsonWrapper<Boolean> {
+    ): JsonWrapper<DbOpResult> {
         val rs = userService.updateRole(input)
         return JsonWrapper.ok(rs)
     }
@@ -57,6 +57,17 @@ class UserApi(
         return dto
     }
 
+    @GetMapping("{id:\\d+}/roleIds")
+    @Operation(
+        summary = "根据ID获取用户拥有角色ID",
+        description = "permission: ${UserPermConst.QUERY_SINGLE}"
+    )
+    @PreAuthorize("@pc.hasPermission('${UserPermConst.QUERY_SINGLE}')")
+    fun roleIds(@PathVariable("id") id: Long): JsonWrapper<UserRoleIdView> {
+        val rs = userService.getById(UserRoleIdView::class, id)
+        return JsonWrapper.ok(rs)
+    }
+
     @PostMapping("page")
     @Operation(
         summary = "分页查询",
@@ -69,4 +80,5 @@ class UserApi(
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
         return JsonWrapper.Companion.ok(rs)
     }
+
 }
