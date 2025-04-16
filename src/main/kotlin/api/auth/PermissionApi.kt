@@ -14,7 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-@Tag(name = "权限元数据管理接口")
+@Tag(name = "权限元数据管理接口", description = "数据应由后台维护，只能提供查看接口")
 @RestController
 @RequestMapping("auth/permission")
 class PermissionApi(
@@ -34,9 +34,11 @@ class PermissionApi(
         return JsonWrapper.ok(rs)
     }
 
+    @Deprecated("不提供修改的接口")
     @Operation(
         summary = "新增权限",
-        description = "permission: ${PermissionPermConst.ADD_DATA}"
+        description = "permission: ${PermissionPermConst.ADD_DATA}",
+        deprecated = true,
     )
     @PreAuthorize("@pc.hasPermission('${PermissionPermConst.ADD_DATA}')")
     @PostMapping
@@ -60,8 +62,10 @@ class PermissionApi(
 
     @Operation(
         summary = "更新权限",
-        description = "permission: ${PermissionPermConst.UPDATE_DATA}"
+        description = "permission: ${PermissionPermConst.UPDATE_DATA}",
+        deprecated = true,
     )
+    @Deprecated("不提供修改的接口")
     @PutMapping
     @PreAuthorize("@pc.hasPermission('${PermissionPermConst.UPDATE_DATA}')")
     fun update(
@@ -73,8 +77,10 @@ class PermissionApi(
 
     @Operation(
         summary = "级联(树形)数据查询",
-        description = "permission: ${PermissionPermConst.QUERY_SINGLE}"
+        description = "permission: ${PermissionPermConst.QUERY_SINGLE}",
+        deprecated = true,
     )
+    @Deprecated("也不需要这个接口")
     @GetMapping("cascader")
     @PreAuthorize("@pc.hasPermission('${PermissionPermConst.QUERY_SINGLE}')")
     @Parameters(
