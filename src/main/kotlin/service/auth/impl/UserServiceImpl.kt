@@ -1,9 +1,12 @@
 package io.github.llh4github.ksas.service.auth.impl
 
+import io.github.llh4github.ksas.common.consts.CacheKeys
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserPermissionCodeView
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserSimpleViewForLogin
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.username
@@ -17,10 +20,11 @@ import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.util.AntPathMatcher
 import kotlin.reflect.KClass
 
 @Service
@@ -29,7 +33,6 @@ class UserServiceImpl : UserService,
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
-    private val pathMatcher by lazy { AntPathMatcher() }
 
     override suspend fun <S : View<User>> getByIdAsync(
         staticType: KClass<S>,
@@ -67,10 +70,31 @@ class UserServiceImpl : UserService,
     }
 
     @Transactional
+    @CacheEvict(cacheNames = [CacheKeys.USER_PERM_CODES], key = "#input.id")
     override fun updateRole(input: UserUpdateRoleInput): DbOpResult {
         sqlClient.getAssociations(User::roles).deleteAll(listOf(input.id), input.roleIds)
         val rs = sqlClient.save(input)
         testAddDbResult(rs)
         return DbOpResult.success()
+    }
+
+    @Cacheable(
+        value = [CacheKeys.USER_PERM_CODES],
+        key = "#id",
+    )
+    override fun fetchPermissionCodes(id: Long): List<String> {
+        return createQuery {
+            where(table.id eq id)
+            select(table.fetch(UserPermissionCodeView::class))
+        }.fetchOneOrNull()
+            ?.roles?.flatMap { it.permissions }?.map { it.code }
+            ?: emptyList()
+    }
+
+    override fun infoForLogin(username: String): UserSimpleViewForLogin? {
+        return createQuery {
+            where(table.username eq username)
+            select(table.fetch(UserSimpleViewForLogin::class))
+        }.fetchOneOrNull()
     }
 }

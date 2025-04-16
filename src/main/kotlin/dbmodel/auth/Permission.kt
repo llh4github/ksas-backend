@@ -27,6 +27,8 @@ interface Permission : BaseModel {
 
     /**
      * 采用以 : 分隔的 Ant 风格路径模式，如 auth:role:view
+     *
+     * 所有权限为 *:*:*
      */
     @Key
     @get:Length(

@@ -1,5 +1,6 @@
 package io.github.llh4github.ksas.service.auth.impl
 
+import io.github.llh4github.ksas.common.consts.CacheKeys
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.Role
@@ -15,6 +16,7 @@ import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ne
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -30,6 +32,7 @@ class RoleServiceImpl : RoleService, BaseServiceImpl<Role>(Role::class), SimpleU
     }
 
     @Transactional
+    @CacheEvict(cacheNames = [CacheKeys.USER_PERM_CODES], allEntries = true)
     override fun updateUnique(input: RoleUpdateInput): DbOpResult {
         val entity = input.toEntity()
         updateUniqueData(entity, sqlClient)
