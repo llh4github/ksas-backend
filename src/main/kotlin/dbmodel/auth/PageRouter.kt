@@ -18,6 +18,7 @@ import org.babyfish.jimmer.sql.*
  */
 @Entity
 @Table(name = "auth_page_router")
+@Deprecated("后台不应存前端页面数据，只返回用户拥有的权限， 前端判断显隐就行了。")
 interface PageRouter : BaseModel {
 
     @get:Schema(title = "菜单类型")
