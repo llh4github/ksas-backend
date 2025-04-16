@@ -39,6 +39,7 @@ class SpringSecurityConfig(
             .authorizeHttpRequests {
                 it.requestMatchers(*annoUrls).permitAll()
                     .requestMatchers(RegexRequestMatcher("^.*\\.(css|js)$", null)).permitAll()
+                    .anyRequest().authenticated()
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling {
