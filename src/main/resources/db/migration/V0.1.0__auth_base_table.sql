@@ -6,6 +6,7 @@ create table auth_user
         unique,
     password           text   not null,
     nickname           text   not null,
+    last_login_time timestamp(6),
     created_time       timestamp(6),
     updated_time       timestamp(6),
     updated_by_user_id bigint,
@@ -26,6 +27,8 @@ comment
 on column auth_user.created_time is '创建时间';
 comment
 on column auth_user.updated_time is '更新时间';
+comment
+on column auth_user.last_login_time is '上一次登录时间';
 comment
 on column auth_user.updated_by_user_id is '更新者ID';
 comment
