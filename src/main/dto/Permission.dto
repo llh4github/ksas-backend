@@ -5,20 +5,13 @@ input PermissionAddInput {
     title
     remark
     code
-    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
-    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
-    id(parent) as parentId
 }
 
-@io.github.llh4github.ksas.common.validator.NoSameId
 input PermissionUpdateInput {
     id!
     title
     remark
     code
-    @jakarta.validation.constraints.Min(1, message = "parentId必须大于0")
-    @jakarta.validation.constraints.NotNull(message = "必须选择上级端点权限")
-    id(parent) as parentId
 }
 
 PermissionSimpleView {
@@ -26,12 +19,7 @@ PermissionSimpleView {
     title
     code
 }
-PermissionCasecaderView {
-    id
-    title
-    code
-    children*
-}
+
 PermissionBaseView {
     id
     title
@@ -39,7 +27,6 @@ PermissionBaseView {
     remark
     updatedTime
     createdTime
-    id(parent) as parentId
     createdByUser {
         id
         username

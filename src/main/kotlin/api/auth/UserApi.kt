@@ -57,13 +57,13 @@ class UserApi(
         return dto
     }
 
-    @GetMapping("{id:\\d+}/roleIds")
+    @GetMapping("roleIds")
     @Operation(
         summary = "根据ID获取用户拥有角色ID",
         description = "permission: ${UserPermConst.QUERY_SINGLE}"
     )
     @PreAuthorize("@pc.hasPermission('${UserPermConst.QUERY_SINGLE}')")
-    fun roleIds(@PathVariable("id") id: Long): JsonWrapper<UserRoleIdView> {
+    fun roleIds(@RequestParam id: Long): JsonWrapper<UserRoleIdView> {
         val rs = userService.getById(UserRoleIdView::class, id)
         return JsonWrapper.ok(rs)
     }

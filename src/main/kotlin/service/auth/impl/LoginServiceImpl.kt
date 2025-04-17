@@ -2,33 +2,32 @@ package io.github.llh4github.ksas.service.auth.impl
 
 import io.github.llh4github.ksas.common.exceptions.UserModuleException
 import io.github.llh4github.ksas.config.property.JwtType
-import io.github.llh4github.ksas.dbmodel.auth.User
-import io.github.llh4github.ksas.dbmodel.auth.username
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserSimpleViewForLogin
 import io.github.llh4github.ksas.payload.login.LoginOkToken
 import io.github.llh4github.ksas.payload.login.LogoutView
 import io.github.llh4github.ksas.payload.login.RefreshJwtView
 import io.github.llh4github.ksas.payload.login.UserLoginView
 import io.github.llh4github.ksas.security.SecurityUtil
 import io.github.llh4github.ksas.service.auth.LoginService
+import io.github.llh4github.ksas.service.auth.UserService
 import io.github.llh4github.ksas.service.extra.JwtService
-import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class LoginServiceImpl(
-    private val sqlClient: KSqlClient,
     private val jwtService: JwtService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val userService: UserService,
 ) : LoginService {
 
     override fun login(view: UserLoginView): LoginOkToken {
-        val user = fetchUser(view.username)
+        val user = userService.infoForLogin(view.username) ?: throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
         if (!passwordEncoder.matches(view.password, user.password)) {
             throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
         }
-        return createJwtResult(user)
+        val permissions = userService.fetchPermissionCodes(user.id)
+        return createJwtResult(user, permissions)
     }
 
     override fun logout(view: LogoutView) {
@@ -40,13 +39,14 @@ class LoginServiceImpl(
     override fun refreshToken(view: RefreshJwtView): LoginOkToken {
         val username = jwtService.validateTokenGetUsername(view.refreshToken)
             ?: throw UserModuleException.jwtInvalid("登录凭证不合法")
-        val user = fetchUser(username)
+        val user = userService.infoForLogin(username) ?: throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
         jwtService.removeToken(view.accessToken)
         jwtService.removeToken(view.refreshToken)
-        return createJwtResult(user)
+        val permissions = userService.fetchPermissionCodes(user.id)
+        return createJwtResult(user, permissions)
     }
 
-    fun createJwtResult(user: User): LoginOkToken {
+    fun createJwtResult(user: UserSimpleViewForLogin, permissions: List<String> = emptyList()): LoginOkToken {
         val access = jwtService.createToken(user.id, user.username, JwtType.ACCESS)
         val refresh = jwtService.createToken(user.id, user.username, JwtType.REFRESH).first
         return LoginOkToken(
@@ -55,14 +55,8 @@ class LoginServiceImpl(
             accessToken = access.first,
             refreshToken = refresh,
             expire = access.second,
+            permissions = permissions
         )
-    }
-
-    fun fetchUser(username: String): User {
-        return sqlClient.createQuery(User::class) {
-            where(table.username eq username)
-            select(table)
-        }.fetchOneOrNull() ?: throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
     }
 }
 

@@ -4,6 +4,7 @@ import io.github.llh4github.ksas.common.utils.IdGenerator
 import io.github.llh4github.ksas.config.property.JwtProperty
 import io.github.llh4github.ksas.config.property.JwtType
 import io.github.llh4github.ksas.security.UserAuthBo
+import io.github.llh4github.ksas.service.auth.UserService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -19,7 +20,8 @@ import javax.crypto.SecretKey
 class JwtService(
     private val jwtProperty: JwtProperty,
     private val idGenerator: IdGenerator,
-    private val redisTemplate: RedisTemplate<String, String>
+    private val redisTemplate: RedisTemplate<String, String>,
+    private val userService: UserService,
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -61,10 +63,11 @@ class JwtService(
         return parseToken(token)?.let {
             val userId = it.subject.toLongOrNull() ?: return null
             val username = it[UNAME] ?: return null
+            val permissions = userService.fetchPermissionCodes(userId)
             return UserAuthBo(
                 userId = userId,
                 username = username as String,
-                permissions = emptyList()
+                permissions = permissions
             )
         }
     }

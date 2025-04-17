@@ -1,9 +1,11 @@
 package io.github.llh4github.ksas.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.llh4github.ksas.common.req.PageQueryParam
 import io.github.llh4github.ksas.common.req.PageQueryParamTrait
 import io.github.llh4github.ksas.common.req.PageResult
 import io.github.llh4github.ksas.dbmodel.BaseModel
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.babyfish.jimmer.View
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.KExecutable
@@ -16,15 +18,26 @@ import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
 import org.babyfish.jimmer.sql.kt.ast.table.makeOrders
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
+import java.time.Duration
 import kotlin.reflect.KClass
 
 abstract class BaseServiceImpl<E : BaseModel>(
     private val entityType: KClass<E>,
 ) : BaseService<E> {
+
+    private val logger = KotlinLogging.logger {}
+
     @Autowired
     protected lateinit var transactionTemplate: TransactionTemplate
+
+    @Autowired
+    protected lateinit var redisTemplate: RedisTemplate<String, String>
+
+    @Autowired
+    protected lateinit var objectMapper: ObjectMapper
 
     @Autowired
     protected lateinit var sqlClient: KSqlClient
@@ -124,4 +137,32 @@ abstract class BaseServiceImpl<E : BaseModel>(
         return condition.limit(limit).execute()
     }
 
+    /**
+     * 先查缓存，若不存在则从数据库获取并缓存
+     * @param T 缓存对象类型。不建议集合类型等
+     */
+    fun <T> fetchCacheOrLoad(
+        key: String,
+        clazz: Class<T>,
+        timeout: Duration = Duration.ofSeconds(60),
+        fetchDb: () -> T?,
+    ): T? {
+        val value = redisTemplate.opsForValue().get(key)
+        if (value != null) {
+            try {
+                return objectMapper.readValue(value, clazz)
+            } catch (e: Exception) {
+                logger.error(e) { "Error parsing JSON from Redis cache for key: $key value: $value" }
+            }
+        }
+        val result = fetchDb()
+        if (result != null) {
+            redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(result), timeout)
+        }
+        return result
+    }
+
+    fun deleteCache(key: String) {
+        redisTemplate.delete(key)
+    }
 }

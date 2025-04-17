@@ -20,3 +20,5 @@ object PermissionPermConst {
     const val ADD_DATA = "auth:permission:add"
     const val UPDATE_DATA = "auth:permission:update"
 }
+
+

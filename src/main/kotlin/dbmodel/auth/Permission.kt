@@ -27,6 +27,8 @@ interface Permission : BaseModel {
 
     /**
      * 采用以 : 分隔的 Ant 风格路径模式，如 auth:role:view
+     *
+     * 所有权限为 *:*:*
      */
     @Key
     @get:Length(
@@ -40,9 +42,11 @@ interface Permission : BaseModel {
     @get:Schema(description = "权限码", example = "auth:role:view")
     val code: String
 
+    @Deprecated("没必要使用复杂的权限树")
     @ManyToOne
     val parent: Permission?
 
+    @Deprecated("没必要使用复杂的权限树")
     @OneToMany(mappedBy = "parent")
     val children: List<Permission>
 

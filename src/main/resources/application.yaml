@@ -35,6 +35,11 @@ spring:
   flyway:
     enabled: ${FLYWAY_ENABLED:false}
 
+  cache:
+    redis:
+      key-prefix: ${CACHE_KEY_PREFIX:ksas-backend:}
+      time-to-live: ${CACHE_TTL:2d}
+
   data:
     redis:
       host: ${REDIS_HOST:localhost:6379}

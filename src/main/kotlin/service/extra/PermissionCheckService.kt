@@ -1,6 +1,7 @@
 package io.github.llh4github.ksas.service.extra
 
 import io.github.llh4github.ksas.security.SecurityUtil
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.util.AntPathMatcher
 
@@ -12,6 +13,7 @@ import org.springframework.util.AntPathMatcher
 @Service(value = "pc")
 class PermissionCheckService {
     private val matcher = AntPathMatcher(":")
+    private val logger = KotlinLogging.logger {}
 
     fun hasPermission(permission: String): Boolean {
         return SecurityUtil.authorities().any { matcher.match(it.authority, permission) }

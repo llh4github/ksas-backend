@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.service.auth
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.UserSimpleViewForLogin
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.service.BaseService
 import org.babyfish.jimmer.View
@@ -20,4 +21,11 @@ interface UserService : BaseService<User> {
      */
     fun updateRole(input: UserUpdateRoleInput): DbOpResult
 
+    /**
+     * 获取用户的权限编码
+     * 使用缓存
+     */
+    fun fetchPermissionCodes(id: Long): List<String>
+
+    fun infoForLogin(username: String): UserSimpleViewForLogin?
 }

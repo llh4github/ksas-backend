@@ -21,4 +21,6 @@ data class LoginOkToken(
     @Schema(description = "访问凭证过期时间")
     @JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT, timezone = DatetimeConstant.BEIJING_TIME_ZONE)
     val expire: Date,
+    @Schema(description = "权限列表")
+    val permissions: List<String> = emptyList<String>(),
 )
