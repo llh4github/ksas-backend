@@ -59,6 +59,7 @@ dependencies {
 
     //#region jimmer
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
+    implementation("org.flywaydb:flyway-core")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
     //#endregion jimmer
 
