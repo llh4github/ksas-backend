@@ -1,19 +1,13 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${KSAS_SERVER_PORT:8080}
 knife4j:
-  # 开启增强配置
-  # knife4j与springboot3.4.0以上版本不兼容 无法使用增强配置
   enable: false
-  # 开启生产环境屏蔽
-  production: ${DISABLE_SWAGGER:true}
-logging:
-  file:
-    path: ${LOG_PATH:./logs}
+  production: ${KSAS_DISABLE_SWAGGER:true}
 jimmer:
   language: kotlin
-  show-sql: ${SHOW_SQL:false}
-  pretty-sql: ${SHOW_SQL:false}
-  inline-sql-variables: ${SHOW_SQL:false}
+  show-sql: ${KSAS_SHOW_SQL:false}
+  pretty-sql: ${KSAS_SHOW_SQL:false}
+  inline-sql-variables: ${KSAS_SHOW_SQL:false}
   in-list-padding-enabled: true
 
 management:
@@ -27,29 +21,29 @@ management:
 
 spring:
   application:
-    name: ${APP_NAME:ksas-backend}
+    name: ${KSAS_APP_NAME:ksas-backend}
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/ksas}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: ${KSAS_DB_URL:jdbc:postgresql://localhost:5432/ksas}
+    username: ${KSAS_DB_USERNAME:postgres}
+    password: ${KSAS_DB_PASSWORD:postgres}
   flyway:
-    enabled: ${FLYWAY_ENABLED:false}
+    enabled: ${KSAS_FLYWAY_ENABLED:false}
 
   cache:
     redis:
-      key-prefix: ${CACHE_KEY_PREFIX:ksas-backend:}
-      time-to-live: ${CACHE_TTL:2d}
+      key-prefix: ${KSAS_CACHE_KEY_PREFIX:ksas-backend:}
+      time-to-live: ${KSAS_CACHE_TTL:2d}
 
   data:
     redis:
-      host: ${REDIS_HOST:localhost:6379}
-      password: ${REDIS_PASSWORD:}
+      host: ${KSAS_REDIS_HOST:localhost:6379}
+      password: ${KSAS_REDIS_PASSWORD:}
 
 ksas:
   security:
     auth:
-      anon-urls: ${ANON_URLS:/login,/actuator/**,/swagger/**,/doc.html,/v3/api-docs/**}
+      anon-urls: ${KSAS_ANON_URLS:/login,/actuator/**,/swagger/**,/doc.html,/v3/api-docs/**}
     jwt:
-      secret: ${JWT_SECRET:VyHZ8YGV9w94dRw8ixVzJgcoDXqvRokej2339zCxiMIgbgmM}
-      access-token-expire: ${ACCESS_TOKEN_EXPIRE_TIME:7d}
-      refresh-token-expire: ${REFRESH_TOKEN_EXPIRE_TIME:8d}
+      secret: ${KSAS_JWT_SECRET:VyHZ8YGV9w94dRw8ixVzJgcoDXqvRokej2339zCxiMIgbgmM}
+      access-token-expire: ${KSAS_ACCESS_TOKEN_EXPIRE_TIME:7d}
+      refresh-token-expire: ${KSAS_REFRESH_TOKEN_EXPIRE_TIME:8d}
