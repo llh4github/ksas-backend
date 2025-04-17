@@ -21,10 +21,4 @@ object PermissionPermConst {
     const val UPDATE_DATA = "auth:permission:update"
 }
 
-object PageRouterPermConst {
-    const val QUERY_SINGLE = "auth:pageRouter:view:id"
-    const val QUERY_CASCADER = "auth:pageRouter:view:cascader"
-    const val QUERY_PAGE = "auth:pageRouter:view:page"
-    const val ADD_DATA = "auth:pageRouter:add"
-    const val UPDATE_DATA = "auth:pageRouter:update"
-}
+
