@@ -57,3 +57,17 @@ UserRoleIdView {
     id
     id(roles) as roleIds
 }
+UserPermissionCodeView {
+    id
+    roles {
+        permissions {
+            code
+        }
+    }
+}
+
+UserSimpleViewForLogin {
+    id
+    username
+    password
+}
