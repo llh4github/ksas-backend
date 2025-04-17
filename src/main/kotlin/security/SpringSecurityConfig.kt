@@ -5,13 +5,11 @@ import io.github.llh4github.ksas.common.req.JsonWrapper
 import io.github.llh4github.ksas.config.property.AuthProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.Authentication
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.AccessDeniedHandler
@@ -52,18 +50,6 @@ class SpringSecurityConfig(
             )
         return http.build()
     }
-
-    @Bean
-    fun authenticationManager(): AuthenticationManager {
-        return object : AuthenticationManager {
-            override fun authenticate(authentication: Authentication): Authentication {
-                authentication.isAuthenticated = true
-                return authentication
-            }
-
-        }
-    }
-
 
     val notAuth = JsonWrapper<Void>(msg = "无权访问", code = "ACCESS_DENIED", module = "AUTH")
     val notLogin = JsonWrapper<Void>(msg = "未登录", code = "NOT_LOGIN", module = "AUTH")
