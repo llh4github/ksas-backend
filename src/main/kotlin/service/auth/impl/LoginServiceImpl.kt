@@ -27,6 +27,7 @@ class LoginServiceImpl(
             throw UserModuleException.loginFailed(LOGIN_FAIL_MSG)
         }
         val permissions = userService.fetchPermissionCodes(user.id)
+        userService.recordLoginInfo(user.id)
         return createJwtResult(user, permissions)
     }
 

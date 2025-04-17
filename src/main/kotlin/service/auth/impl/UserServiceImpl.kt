@@ -9,6 +9,7 @@ import io.github.llh4github.ksas.dbmodel.auth.dto.UserPermissionCodeView
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserSimpleViewForLogin
 import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
 import io.github.llh4github.ksas.dbmodel.auth.id
+import io.github.llh4github.ksas.dbmodel.auth.lastLoginTime
 import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.SimpleUniqueDataOp
@@ -25,6 +26,7 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
 @Service
@@ -96,5 +98,13 @@ class UserServiceImpl : UserService,
             where(table.username eq username)
             select(table.fetch(UserSimpleViewForLogin::class))
         }.fetchOneOrNull()
+    }
+
+    @Transactional
+    override fun recordLoginInfo(id: Long) {
+        createUpdate {
+            set(table.lastLoginTime, LocalDateTime.now())
+            where(table.id eq id)
+        }.execute()
     }
 }

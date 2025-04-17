@@ -28,4 +28,6 @@ interface UserService : BaseService<User> {
     fun fetchPermissionCodes(id: Long): List<String>
 
     fun infoForLogin(username: String): UserSimpleViewForLogin?
+
+    fun recordLoginInfo(id: Long)
 }
