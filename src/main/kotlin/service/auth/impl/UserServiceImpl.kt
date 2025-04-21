@@ -83,7 +83,7 @@ class UserServiceImpl(
     }
 
     @Cacheable(
-        value = [CacheKeys.USER_PERM_CODES],
+        cacheNames = [CacheKeys.USER_PERM_CODES],
         key = "#id",
     )
     override fun fetchPermissionCodes(id: Long): List<String> {
