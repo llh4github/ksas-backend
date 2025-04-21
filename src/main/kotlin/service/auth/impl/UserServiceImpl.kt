@@ -3,6 +3,7 @@ package io.github.llh4github.ksas.service.auth.impl
 import io.github.llh4github.ksas.common.consts.CacheKeys
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
 import io.github.llh4github.ksas.common.req.DbOpResult
+import io.github.llh4github.ksas.common.req.PageResult
 import io.github.llh4github.ksas.dbmodel.auth.User
 import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.dbmodel.auth.id
@@ -11,6 +12,7 @@ import io.github.llh4github.ksas.dbmodel.auth.username
 import io.github.llh4github.ksas.service.BaseServiceImpl
 import io.github.llh4github.ksas.service.SimpleUniqueDataOp
 import io.github.llh4github.ksas.service.auth.UserService
+import io.github.llh4github.ksas.service.extra.UserActivityService
 import io.github.llh4github.ksas.service.testAddDbResult
 import org.babyfish.jimmer.View
 import org.babyfish.jimmer.kt.isLoaded
@@ -23,11 +25,14 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
 @Service
-class UserServiceImpl : UserService,
+class UserServiceImpl(
+    private val userActivityService: UserActivityService
+) : UserService,
     BaseServiceImpl<User>(User::class), SimpleUniqueDataOp<User> {
 
     @Autowired
@@ -100,12 +105,13 @@ class UserServiceImpl : UserService,
     override fun <S : View<User>> activeUserPageQuery(
         staticType: KClass<S>,
         query: UserQuerySpec,
-        activeIds: List<Long>,
         sortField: String
-    ) {
-        val rs = pageQuery(
-            staticType, query, query.pageParam, sortField, predicates = arrayOf(
-
+    ): PageResult<S> {
+        val userIds = userActivityService.fetchActivityUserId(Duration.ofDays(1L))
+        return pageQuery(
+            staticType, query, query.pageParam, sortField,
+            otherSpec = arrayOf(
+                UserValueInIdsSpec(userIds = userIds)
             )
         )
     }
