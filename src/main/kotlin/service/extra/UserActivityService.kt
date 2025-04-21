@@ -28,6 +28,8 @@ class UserActivityService(
 
     /**
      * 获取一段时间内活跃过的用户ID列表。
+     *
+     * 此时间不宜过长，建议不超过1天。
      */
     fun fetchActivityUserId(duration: Duration): List<Long> {
         val delta = duration.toMillis()

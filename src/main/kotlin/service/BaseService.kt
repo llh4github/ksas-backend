@@ -31,6 +31,7 @@ interface BaseService<E : BaseModel> {
      * @param sortField 排序字段。默认按照更新时间倒序。格式为 "字段名 排序方式"，如 "updatedTime desc"。
      * 多个字段排序时用逗号分隔，如 "updatedTime desc, createdTime desc"。
      * 参考文档 [动态排序](https://babyfish-ct.github.io/jimmer-doc/zh/docs/query/dynamic-order)
+     * @param otherSpec 其他查询条件.通常是非用户输入的条件。
      * @return 分页查询结果，包含分页信息和查询结果
      */
     fun <S : View<E>> pageQuery(
@@ -38,6 +39,7 @@ interface BaseService<E : BaseModel> {
         querySpec: KSpecification<E>,
         pageQueryParam: PageQueryParam,
         sortField: String = "updatedTime desc",
+        vararg otherSpec: KSpecification<E> = emptyArray(),
     ): PageResult<S>
 
     /**
@@ -48,6 +50,7 @@ interface BaseService<E : BaseModel> {
      * 多个字段排序时用逗号分隔，如 "updatedTime desc, createdTime desc"。
      * 参考文档 [动态排序](https://babyfish-ct.github.io/jimmer-doc/zh/docs/query/dynamic-order)
      * @param limit 限制返回结果的数量
+     * @param otherSpec 其他查询条件.通常是非用户输入的条件。
      * @return 查询结果
      */
     fun <S : View<E>> listQuery(
@@ -55,5 +58,6 @@ interface BaseService<E : BaseModel> {
         querySpec: KSpecification<E>? = null,
         sortField: String = "updatedTime desc",
         limit: Int? = null,
+        vararg otherSpec: KSpecification<E> = emptyArray(),
     ): List<S>
 }

@@ -78,7 +78,7 @@ class UserApi(
         @RequestBody @Validated(QueryGroup::class) query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
-        return JsonWrapper.Companion.ok(rs)
+        return JsonWrapper.ok(rs)
     }
 
 }

@@ -4,10 +4,7 @@ import io.github.llh4github.ksas.common.consts.CacheKeys
 import io.github.llh4github.ksas.common.exceptions.DbCommonException
 import io.github.llh4github.ksas.common.req.DbOpResult
 import io.github.llh4github.ksas.dbmodel.auth.User
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserAddInput
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserPermissionCodeView
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserSimpleViewForLogin
-import io.github.llh4github.ksas.dbmodel.auth.dto.UserUpdateRoleInput
+import io.github.llh4github.ksas.dbmodel.auth.dto.*
 import io.github.llh4github.ksas.dbmodel.auth.id
 import io.github.llh4github.ksas.dbmodel.auth.lastLoginTime
 import io.github.llh4github.ksas.dbmodel.auth.username
@@ -98,6 +95,19 @@ class UserServiceImpl : UserService,
             where(table.username eq username)
             select(table.fetch(UserSimpleViewForLogin::class))
         }.fetchOneOrNull()
+    }
+
+    override fun <S : View<User>> activeUserPageQuery(
+        staticType: KClass<S>,
+        query: UserQuerySpec,
+        activeIds: List<Long>,
+        sortField: String
+    ) {
+        val rs = pageQuery(
+            staticType, query, query.pageParam, sortField, predicates = arrayOf(
+
+            )
+        )
     }
 
     @Transactional
