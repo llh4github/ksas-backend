@@ -1,11 +1,14 @@
 package io.github.llh4github.ksas.dbmodel.auth
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import io.github.llh4github.ksas.common.consts.CreateUpdateGroup
+import io.github.llh4github.ksas.common.consts.DatetimeConstant
 import io.github.llh4github.ksas.dbmodel.BaseModel
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import org.babyfish.jimmer.sql.*
 import org.hibernate.validator.constraints.Length
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "auth_user")
@@ -31,6 +34,10 @@ interface User : BaseModel {
     @get:Schema(title = "昵称")
     @get:NotBlank(message = "昵称不能为空")
     val nickname: String
+
+    @get:Schema(title = "上一次登录时间")
+    @get:JsonFormat(pattern = DatetimeConstant.DATE_TIME_FORMAT)
+    val lastLoginTime: LocalDateTime?
 
     @ManyToMany
     @JoinTable(

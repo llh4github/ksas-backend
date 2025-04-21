@@ -59,6 +59,7 @@ dependencies {
 
     //#region jimmer
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
+    implementation("org.flywaydb:flyway-core")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
     //#endregion jimmer
 
@@ -74,6 +75,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.redisson:redisson-spring-boot-starter:3.45.0")
     //#endregion web
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${coroutinesVersion}")
@@ -83,6 +85,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
     runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

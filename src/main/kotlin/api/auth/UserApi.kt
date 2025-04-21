@@ -78,7 +78,19 @@ class UserApi(
         @RequestBody @Validated(QueryGroup::class) query: UserQuerySpec
     ): JsonWrapper<PageResult<UserBaseView>> {
         val rs = userService.pageQuery(UserBaseView::class, query, query.pageParam)
-        return JsonWrapper.Companion.ok(rs)
+        return JsonWrapper.ok(rs)
     }
 
+    @PostMapping("page/active")
+    @Operation(
+        summary = "分页查询活跃用户",
+        description = "permission: ${UserPermConst.QUERY_PAGE_ACTIVE}"
+    )
+    @PreAuthorize("@pc.hasPermission('${UserPermConst.QUERY_PAGE_ACTIVE}')")
+    fun pageActiveUser(
+        @RequestBody @Validated(QueryGroup::class) query: UserQuerySpec
+    ): JsonWrapper<PageResult<UserBaseView>> {
+        val rs = userService.activeUserPageQuery(UserBaseView::class, query, sortField = "lastLoginTime desc")
+        return JsonWrapper.ok(rs)
+    }
 }

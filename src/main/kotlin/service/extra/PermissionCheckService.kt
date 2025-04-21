@@ -16,6 +16,9 @@ class PermissionCheckService {
     private val logger = KotlinLogging.logger {}
 
     fun hasPermission(permission: String): Boolean {
+        if (SecurityUtil.authorities().any { "*:*:*" == it.authority }) {
+            return true
+        }
         return SecurityUtil.authorities().any { matcher.match(it.authority, permission) }
     }
 

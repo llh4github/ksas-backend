@@ -10,6 +10,7 @@ object RolePermConst {
 object UserPermConst {
     const val QUERY_SINGLE = "auth:user:view:id"
     const val QUERY_PAGE = "auth:user:view:page"
+    const val QUERY_PAGE_ACTIVE = "auth:user:view:page:active"
     const val ADD_DATA = "auth:user:add"
     const val UPDATE_DATA = "auth:user:update"
 }

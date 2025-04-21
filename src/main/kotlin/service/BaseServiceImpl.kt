@@ -110,10 +110,16 @@ abstract class BaseServiceImpl<E : BaseModel>(
         querySpec: KSpecification<E>,
         pageQueryParam: PageQueryParam,
         sortField: String,
+        vararg otherSpec: KSpecification<E>,
     ): PageResult<S> {
         return createQuery {
             orderBy(table.makeOrders(sortField))
             where(querySpec)
+            if (otherSpec.isNotEmpty()) {
+                otherSpec.forEach {
+                    where(it)
+                }
+            }
             select(table.fetch(staticType))
         }.fetchCustomPage(pageQueryParam)
     }
@@ -123,11 +129,17 @@ abstract class BaseServiceImpl<E : BaseModel>(
         querySpec: KSpecification<E>?,
         sortField: String,
         limit: Int?,
+        vararg otherSpec: KSpecification<E>,
     ): List<S> {
         val condition = createQuery {
             orderBy(table.makeOrders(sortField))
             querySpec?.let {
                 where(querySpec)
+            }
+            if (otherSpec.isNotEmpty()) {
+                otherSpec.forEach {
+                    where(it)
+                }
             }
             select(table.fetch(staticType))
         }

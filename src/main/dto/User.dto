@@ -16,6 +16,10 @@ UserPageEle {
     updatedTime
 }
 
+specification UserValueInIdsSpec {
+    valueIn(id) as userIds
+}
+
 specification UserQuerySpec {
     like/i(username)
     like/i(nickname)
