@@ -33,6 +33,7 @@ spring:
     redis:
       key-prefix: ${KSAS_CACHE_KEY_PREFIX:ksas-backend:}
       time-to-live: ${KSAS_CACHE_TTL:2d}
+    type: redis
 
   data:
     redis:
