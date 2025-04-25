@@ -12,4 +12,9 @@ interface LoginService {
     fun logout(view: LogoutView)
 
     fun refreshToken(view: RefreshJwtView): LoginOkToken
+
+    /**
+     * 强制用户登出
+     */
+    fun forceUserLogout(userIds: List<Long>): Int
 }

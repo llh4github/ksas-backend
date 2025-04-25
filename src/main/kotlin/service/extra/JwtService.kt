@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.script.DefaultRedisScript
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
@@ -83,6 +84,40 @@ class JwtService(
             logger.warn(e) { "Error parsing JWT token: $token" }
             null
         }
+    }
+
+    fun removeTokenByUserIds(userIds: List<Long>): Int {
+        val keys = userIds.map { userId ->
+            "${jwtProperty.cachePrefix}:$userId:*"
+        }.toList()
+        // 删除多个匹配模式的所有 key 并返回总数
+        val deletePatternScript = """
+local patterns = {}
+for i = 1, #ARGV do
+    patterns[i] = ARGV[i]
+end
+
+local deleted = 0
+local keySet = {}  -- 用于去重
+
+for _, pattern in ipairs(patterns) do
+    local keys = redis.call('KEYS', pattern)
+    for _, key in ipairs(keys) do
+        if not keySet[key] then
+            keySet[key] = true
+            deleted = deleted + 1
+        end
+    end
+end
+
+if deleted > 0 then
+    redis.call('DEL', unpack(redis.call('KEYS', unpack(patterns))))
+end
+
+return deleted
+        """.trimIndent()
+        val script = DefaultRedisScript(deletePatternScript, Int::class.java)
+        return redisTemplate.execute(script, emptyList<String>(), *keys.toTypedArray())
     }
 
     /**

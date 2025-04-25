@@ -59,6 +59,10 @@ class LoginServiceImpl(
             permissions = permissions
         )
     }
+
+    override fun forceUserLogout(userIds: List<Long>): Int {
+        TODO("Not yet implemented")
+    }
 }
 
 private const val LOGIN_FAIL_MSG = "用户名或密码不正确"
