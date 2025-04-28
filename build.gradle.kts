@@ -75,6 +75,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    // native 打包有问题，预计 3.46.0 版本修复
     implementation("org.redisson:redisson-spring-boot-starter:3.45.0")
     //#endregion web
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
