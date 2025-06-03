@@ -76,7 +76,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     // native 打包有问题，预计 3.46.0 版本修复
-    implementation("org.redisson:redisson-spring-boot-starter:3.45.0")
+    implementation("org.redisson:redisson-spring-boot-starter:3.48.0")
     //#endregion web
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${coroutinesVersion}")
@@ -122,6 +122,21 @@ springBoot {
 tasks.withType<BootJar> {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
+
+graalvmNative {
+    binaries {
+        named("main") {
+            // 核心配置：允许Netty内部类在构建时初始化
+            buildArgs.add("--initialize-at-build-time=io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess")
+            buildArgs.add("--initialize-at-build-time=io.netty.util.internal.shaded")
+            // 可选调试配置（如需诊断）
+            buildArgs.add("--trace-class-initialization=io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess")
+            // 其他推荐配置
+            buildArgs.add("-H:+ReportExceptionStackTraces")
+        }
+    }
+}
+
 tasks.withType<BootBuildImage> {
     tags.add("linhong4dockerhub/ksas-backend:latest")
     tags.add("linhong4dockerhub/ksas-backend:$version")
