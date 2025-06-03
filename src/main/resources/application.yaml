@@ -39,6 +39,11 @@ spring:
     redis:
       host: ${KSAS_REDIS_HOST:localhost:6379}
       password: ${KSAS_REDIS_PASSWORD:}
+  threads:
+    virtual:
+      enabled: true
+  main:
+    keep-alive: true
 
 ksas:
   security:
