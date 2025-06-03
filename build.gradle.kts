@@ -5,7 +5,7 @@ import java.time.Instant
 plugins {
     kotlin("jvm") version "2.0.10"
     kotlin("plugin.spring") version "2.0.10"
-    id("org.springframework.boot") version "3.4.4"
+    id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.10.6"
     id("com.google.devtools.ksp") version "2.0.10-1.0.24"
